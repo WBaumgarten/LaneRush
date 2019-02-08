@@ -43,4 +43,8 @@ public class Handler {
         object.remove(tempObject);
     }
 
+    public void removeAllObjects() {
+        object.clear();
+    }
+
 }

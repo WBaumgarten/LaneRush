@@ -1,11 +1,11 @@
 package lanerush;
 
-import lanerush.gatherers.Miner;
 import lanerush.structures.Castle;
 import lanerush.structures.Mine;
 import lanerush.structures.Woods;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -19,34 +19,71 @@ import java.util.logging.Logger;
 public class Game extends Canvas implements Runnable {
 
     public static final int WIDTH = 1200, HEIGHT = 768;
+    public final int MENU = 0, PLAY = 1, END = 2;
+    private int state = MENU;
     private boolean isRunning = false;
     private Thread thread;
     private Handler handler;
     private BufferedImage spriteSheet = null;
     private SpriteSheet ss;
+    private String infoText = "Press enter to start!";
+    Font infoTextFont = new Font("04b03", Font.BOLD, 30);
+    public static final Font defaultFont = new Font("FixedSys", Font.BOLD, 10);
 
     public Game() {
         new Window(WIDTH, HEIGHT, "Castle Rush", this);
         start();
 
         handler = new Handler();
-        
-        
+
         BufferedImageLoader loader = new BufferedImageLoader();
         spriteSheet = loader.loadImage("/spriteSheet.png");
         ss = new SpriteSheet(spriteSheet);
-        
+
         this.addKeyListener(new KeyInput(handler, this, ss));
         this.addMouseListener(new MouseInput(handler));
+        initGameObjects();
+    }
 
-        handler.addObject(new Castle(ID.Castle, true, handler, ss));
-        handler.addObject(new Castle(ID.Castle, false, handler, ss));
-        handler.addObject(new Cursor(ID.Cursor, true, handler, ss));
-        handler.addObject(new Cursor(ID.Cursor, false, handler, ss));
+    private void initGameObjects() {
+        handler.addObject(new Castle(ID.Castle, true, handler, ss, this));
+        handler.addObject(new Castle(ID.Castle, false, handler, ss, this));
         handler.addObject(new Mine(ID.Mine, true, handler, ss));
         handler.addObject(new Mine(ID.Mine, false, handler, ss));
         handler.addObject(new Woods(ID.Woods, true, handler, ss));
         handler.addObject(new Woods(ID.Woods, false, handler, ss));
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void startMatch() {
+        infoText = "";
+        if (state == END) {
+            initGameObjects();
+        }
+        handler.addObject(new Cursor(ID.Cursor, true, handler, ss));
+        handler.addObject(new Cursor(ID.Cursor, false, handler, ss));
+        state = PLAY;
+    }
+
+    public void endMatch(boolean isPlayerLeft) {
+        state = END;
+        if (isPlayerLeft) {
+            infoText = "Blue player won!";
+        } else {
+            infoText = "Red player won!";
+        }
+    }
+    
+    public void restartMatch() {
+        infoText = "";
+        handler.removeAllObjects();
+        initGameObjects();
+        handler.addObject(new Cursor(ID.Cursor, true, handler, ss));
+        handler.addObject(new Cursor(ID.Cursor, false, handler, ss));
+        state = PLAY;
     }
 
     private void start() {
@@ -92,7 +129,9 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void tick() {
-        handler.tick();
+        if (state != END) {
+            handler.tick();
+        }
     }
 
     public void render() {
@@ -103,28 +142,33 @@ public class Game extends Canvas implements Runnable {
         }
 
         Graphics g = bs.getDrawGraphics();
+        g.setFont(defaultFont);
         ///////// Draw Here ///////
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect(0, 0, 1200, 800);
 
         g.setColor(Color.BLACK);
-//        for (int i = 0; i < 496; i += 32) {
-//            g.drawLine(i, 206, i, 800);
-//        }
         for (int i = 224; i < 544; i += 32) {
             g.drawLine(0, i, 1200, i);
         }
-        g.setColor(Color.WHITE);
-        for (int i = 0; i < 224; i += 32) {
-            g.drawLine(0, i, 1200, i);
-        }
-        for (int i = 544; i < 1200; i += 32) {
-            g.drawLine(0, i, 1200, i);
-        }
-        
-        
+//        g.setColor(Color.WHITE);
+//        for (int i = 0; i < 224; i += 32) {
+//            g.drawLine(0, i, 1200, i);
+//        }
+//        for (int i = 544; i < 1200; i += 32) {
+//            g.drawLine(0, i, 1200, i);
+//        }
 
         handler.render(g);
+        g.setColor(Color.BLACK);
+        g.setFont(infoTextFont);
+        
+        if (state == MENU) {
+            g.drawString(infoText, (WIDTH / 2) - 220, 40);
+        } else if (state == END) {
+            g.drawString(infoText, (WIDTH / 2) - 200, 40);
+            g.drawString("Press enter to play again.", (WIDTH / 2) - 250, 80);
+        }
         ///////////////////////////
         g.dispose();
         bs.show();

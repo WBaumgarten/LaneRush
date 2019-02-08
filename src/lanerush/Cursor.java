@@ -2,15 +2,17 @@ package lanerush;
 
 import lanerush.structures.Castle;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import lanerush.structures.Mine;
 
 /**
  *
  * @author Wernich
  */
 public class Cursor extends GameObject {
-    
+
     private final int WIDTH = 32, HEIGHT = 32;
 
     private final int GOLDPASSIVE = 5, TIMBERPASSIVE = 5;
@@ -18,6 +20,7 @@ public class Cursor extends GameObject {
     public static final int GOLD = 0, TIMBER = 1;
     private final long resourceTime = 1000000000;
     private long resourceTimer;
+    Font resourceFont = new Font("FixedSys", Font.BOLD, 15);
 
     public Cursor(ID id, boolean playerLeft, Handler handler, SpriteSheet ss) {
         super(id, playerLeft, handler, ss);
@@ -40,17 +43,19 @@ public class Cursor extends GameObject {
     public void render(Graphics g) {
         g.setColor(Color.GREEN);
         g.drawRect(x, y, 32, 32);
+        g.setFont(resourceFont);
         if (isPlayerLeft()) {
             g.setColor(Color.YELLOW);
-            g.drawString("Gold: " + gold, 300, 10);
+            g.drawString("GOLD: " + gold, Mine.WIDTH + 60, 20);
             g.setColor(new Color(139, 69, 19));
-            g.drawString("Timber: " + timber, 300, 30);
+            g.drawString("TIMBER: " + timber, Mine.WIDTH + 60, 40);
         } else {
             g.setColor(Color.YELLOW);
-            g.drawString("Gold: " + gold, 900, 10);
+            g.drawString("GOLD: " + gold, Game.WIDTH - Mine.WIDTH - 120, 20);
             g.setColor(new Color(139, 69, 19));
-            g.drawString("Timber: " + timber, 900, 30);
+            g.drawString("TIMBER: " + timber, Game.WIDTH - Mine.WIDTH - 120, 40);
         }
+        g.setFont(Game.defaultFont);
     }
 
     @Override

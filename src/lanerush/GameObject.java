@@ -26,9 +26,9 @@ public abstract class GameObject {
         this.handler = handler;
         this.ss = ss;
         if (playerLeft) {
-            playerColor = Color.BLUE;
-        } else {
             playerColor = Color.RED;
+        } else {
+            playerColor = Color.BLUE;
         }
     }
     

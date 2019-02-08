@@ -19,15 +19,20 @@ public class Castle extends Structure {
     public static final int WIDTH = 64;
     public static final int HEIGHT = 96;
     public static final int WALLGAP = 100;
+    private Game game;
 
-    public Castle(ID id, boolean playerLeft, Handler handler, SpriteSheet ss) {
+    public Castle(ID id, boolean playerLeft, Handler handler, SpriteSheet ss, Game game) {
         super(id, playerLeft, handler, ss);
+        this.game = game;
         health = 1000;
         initCoords();
     }
 
     @Override
     public void tick() {
+        if (health <= 0) {
+            game.endMatch(isPlayerLeft());
+        }
     }
 
     @Override
@@ -65,9 +70,6 @@ public class Castle extends Structure {
     @Override
     public void loseHealth(int damage) {
         health -= damage;
-        if (health <= 0) {
-            handler.removeObject(this);
-        }
     }
 
     @Override
