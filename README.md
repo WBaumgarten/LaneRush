@@ -9,15 +9,24 @@ Each unit has different costs, attack range, movement speed and damage.
 You can also spawn miners and lumberjacks which will increase gold and timber production in the long run.
 
 ## Controls
-Red Player:				Blue Player:
-w - move cursor up		up arrow - cursor up
-s - move cursor down	down arrow - cursor down
-1 - spawn warrior		numpad_1 - spawn warrior
-2 - spawn archer		numpad_2 - spawn archer
-3 - spawn knight		numpad_3 - spawn knight
-4 - spawn cavalry		numpad_4 - spawn cavalry
-5 - spawn miner			numpad_5 - spawn miner
-6 - spawn lumberjack	numpad_6 - spawn lumberjack
+### Red Player:
+w - move cursor up<br/>
+s - move cursor down<br/>
+1 - spawn warrior<br/>
+2 - spawn archer<br/>
+3 - spawn knight<br/>
+4 - spawn cavalry<br/>
+5 - spawn miner<br/>
+6 - spawn lumberjack<br/>
+### Blue Player:
+up arrow - cursor up<br/>
+down arrow - cursor down<br/>
+numpad_1 - spawn warrior<br/>
+numpad_2 - spawn archer<br/>
+numpad_3 - spawn knight<br/>
+numpad_4 - spawn cavalry<br/>
+numpad_5 - spawn miner<br/>
+numpad_6 - spawn lumberjack<br/>
 
 ## Unit information (Balancing required)
 ### Warrior
