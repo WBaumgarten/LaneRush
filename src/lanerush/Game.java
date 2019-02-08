@@ -32,17 +32,18 @@ public class Game extends Canvas implements Runnable {
 
     public Game() {
         new Window(WIDTH, HEIGHT, "Castle Rush", this);
-        start();
+        
 
         handler = new Handler();
 
         BufferedImageLoader loader = new BufferedImageLoader();
         spriteSheet = loader.loadImage("/spriteSheet.png");
         ss = new SpriteSheet(spriteSheet);
+        start();
 
-        this.addKeyListener(new KeyInput(handler, this, ss));
-        this.addMouseListener(new MouseInput(handler));
         initGameObjects();
+        this.addKeyListener(new KeyInput(handler, this, ss));
+        this.addMouseListener(new MouseInput(handler));       
     }
 
     private void initGameObjects() {
