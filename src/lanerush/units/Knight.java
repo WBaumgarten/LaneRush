@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import lanerush.Animation;
 
 /**
  *
@@ -17,6 +19,9 @@ import java.awt.Rectangle;
 public class Knight extends Unit{
     
     public static final int GOLDCOST = 30, TIMBERCOST = 30;
+    private final BufferedImage stillImg;
+    private final BufferedImage[] walkImg = new BufferedImage[4];
+    private final Animation walkAnim;
 
     public Knight(ID id, boolean playerLeft, int xCoord, int yCoord, int lane, Handler handler, SpriteSheet ss) {
         super(id, playerLeft, handler, ss);
@@ -29,6 +34,21 @@ public class Knight extends Unit{
         target = null;
         speed = 1;
         velX = 1;
+        
+        if (isPlayerLeft()) {
+            stillImg = ss.grabImage(1, 7, 64, 64);
+            walkImg[0] = ss.grabImage(3, 7, 64, 64);
+            walkImg[1] = ss.grabImage(5, 7, 64, 64);
+            walkImg[2] = ss.grabImage(7, 7, 64, 64);
+            walkImg[3] = ss.grabImage(5, 7, 64, 64);
+        } else {
+            stillImg = ss.grabImage(9, 7, 64, 64);
+            walkImg[0] = ss.grabImage(11, 7, 64, 64);
+            walkImg[1] = ss.grabImage(13, 7, 64, 64);
+            walkImg[2] = ss.grabImage(15, 7, 64, 64);
+            walkImg[3] = ss.grabImage(13, 7, 64, 64);
+        }
+        walkAnim = new Animation(10, walkImg);
     }
 
     @Override
@@ -69,14 +89,28 @@ public class Knight extends Unit{
 
             x += velX;
         }
+        walkAnim.runAnimation();
     }
 
     @Override
     public void render(Graphics g) {
-        g.setColor(playerColor);
-        g.fillRect(x, y, 32, 32);
-        g.setColor(Color.GREEN);
-        g.fillRect(x + 12, y + 12, 8, 8);
+        if (velX == 0) {
+            if (isPlayerLeft()) {
+                g.drawImage(stillImg, x, y - 32, null);
+            } else {
+                g.drawImage(stillImg, x - 32, y - 32, null);
+            }
+        } else {
+            if (isPlayerLeft()) {
+                walkAnim.drawAnimation(g, x, y - 32, 0);
+            } else {
+                walkAnim.drawAnimation(g, x - 32, y - 32, 0);
+            }
+        }
+//        g.setColor(playerColor);
+//        g.fillRect(x, y, 32, 32);
+//        g.setColor(Color.GREEN);
+//        g.fillRect(x + 12, y + 12, 8, 8);
         g.setColor(Color.WHITE);
         g.drawString(health + "", x, y);
         Graphics2D g2d = (Graphics2D) g;
