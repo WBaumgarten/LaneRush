@@ -66,7 +66,7 @@ public class KeyInput extends KeyAdapter {
                 for (GameObject object : handler.object) {
                     if (object.getId() == ID.Cursor && object.isPlayerLeft()
                             && object.checkCost(Miner.GOLDCOST, Miner.TIMBERCOST)) {
-                        handler.addObject(new Miner(ID.Miner, true, object.lane, handler, ss));
+                        handler.addObject(new Miner(ID.Miner, true, 1, handler, ss));
                         return;
                     }
                 }
@@ -74,7 +74,7 @@ public class KeyInput extends KeyAdapter {
                 for (GameObject object : handler.object) {
                     if (object.getId() == ID.Cursor && object.isPlayerLeft()
                             && object.checkCost(Lumberjack.GOLDCOST, Lumberjack.TIMBERCOST)) {
-                        handler.addObject(new Lumberjack(ID.Lumberjack, true, object.lane, handler, ss));
+                        handler.addObject(new Lumberjack(ID.Lumberjack, true, 1, handler, ss));
                         return;
                     }
                 }
@@ -114,7 +114,7 @@ public class KeyInput extends KeyAdapter {
                 for (GameObject object : handler.object) {
                     if (object.getId() == ID.Cursor && !object.isPlayerLeft()
                             && object.checkCost(Miner.GOLDCOST, Miner.TIMBERCOST)) {
-                        handler.addObject(new Miner(ID.Miner, false, object.lane, handler, ss));
+                        handler.addObject(new Miner(ID.Miner, false, 1, handler, ss));
                         return;
                     }
                 }
@@ -122,7 +122,7 @@ public class KeyInput extends KeyAdapter {
                 for (GameObject object : handler.object) {
                     if (object.getId() == ID.Cursor && !object.isPlayerLeft()
                             && object.checkCost(Lumberjack.GOLDCOST, Lumberjack.TIMBERCOST)) {
-                        handler.addObject(new Lumberjack(ID.Lumberjack, false, object.lane, handler, ss));
+                        handler.addObject(new Lumberjack(ID.Lumberjack, false, 1, handler, ss));
                         return;
                     }
                 }
@@ -153,11 +153,21 @@ public class KeyInput extends KeyAdapter {
                         object.moveDown();
                     }
                 }
+            } else if (key == KeyEvent.VK_ESCAPE) {
+                System.exit(0);
             }
-        } else if (game.getState() == game.MENU && key == KeyEvent.VK_ENTER) {
-            game.startMatch();
-        } else if (game.getState() == game.END && key == KeyEvent.VK_ENTER) {
-            game.restartMatch();
+        } else if (game.getState() == game.MENU) {
+            if (key == KeyEvent.VK_ENTER) {
+                game.startMatch();
+            } else if (key == KeyEvent.VK_ESCAPE) {
+                System.exit(0);
+            }
+        } else if (game.getState() == game.END) {
+            if (key == KeyEvent.VK_ENTER) {
+                game.restartMatch();
+            } else if (key == KeyEvent.VK_ESCAPE) {
+                System.exit(0);
+            }
         }
     }
 

@@ -7,6 +7,7 @@ package lanerush;
 public abstract class Gatherer extends GameObject{
     
     protected final int TOGATHER = 0, TOBASE = 1, ATBASE = 2, GATHERING = 3;
+    protected double velX = 0, velY = 0;
     protected int state;
     protected int capacity;
     protected int maxCapacity = 100;

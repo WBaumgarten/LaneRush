@@ -11,6 +11,10 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -29,21 +33,38 @@ public class Game extends Canvas implements Runnable {
     private String infoText = "Press enter to start!";
     Font infoTextFont = new Font("04b03", Font.BOLD, 30);
     public static final Font defaultFont = new Font("FixedSys", Font.BOLD, 10);
+    private JDialog loadingPopup;
 
     public Game() {
-        new Window(WIDTH, HEIGHT, "Castle Rush", this);
-        
-
-        handler = new Handler();
-
+        createLoadingPopup();
         BufferedImageLoader loader = new BufferedImageLoader();
         spriteSheet = loader.loadImage("/spriteSheet.png");
         ss = new SpriteSheet(spriteSheet);
-        start();
-
+        removeLoadingPopup();
+        new Window(WIDTH, HEIGHT, "Castle Rush", this);
+        
+        handler = new Handler();
         initGameObjects();
         this.addKeyListener(new KeyInput(handler, this, ss));
-        this.addMouseListener(new MouseInput(handler));       
+        this.addMouseListener(new MouseInput(handler));      
+        start();       
+    }
+
+    private void createLoadingPopup() {
+        JLabel loadingText = new JLabel("LOADING...", SwingConstants.CENTER);
+        loadingText.setFont(infoTextFont);
+        loadingText.setBorder(BorderFactory.createLineBorder(Color.black));
+        loadingPopup = new JDialog();
+        loadingPopup.setSize(260, 90);
+        loadingPopup.setLocationRelativeTo(null);
+        loadingPopup.setTitle("LaneRush");
+        loadingPopup.setUndecorated(true);
+        loadingPopup.add(loadingText);
+        loadingPopup.setVisible(true);
+    }
+
+    private void removeLoadingPopup() {
+        loadingPopup.dispose();
     }
 
     private void initGameObjects() {
@@ -77,7 +98,7 @@ public class Game extends Canvas implements Runnable {
             infoText = "Red player won!";
         }
     }
-    
+
     public void restartMatch() {
         infoText = "";
         handler.removeAllObjects();
@@ -163,7 +184,7 @@ public class Game extends Canvas implements Runnable {
         handler.render(g);
         g.setColor(Color.BLACK);
         g.setFont(infoTextFont);
-        
+
         if (state == MENU) {
             g.drawString(infoText, (WIDTH / 2) - 220, 40);
         } else if (state == END) {

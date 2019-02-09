@@ -21,6 +21,7 @@ public class Woods extends Structure {
 
     public Woods(ID id, boolean playerLeft, Handler handler, SpriteSheet ss) {
         super(id, playerLeft, handler, ss);
+        this.setLane(2);
         health = 100;
         initCoords();
     }

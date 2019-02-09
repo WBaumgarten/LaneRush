@@ -24,6 +24,7 @@ public class Castle extends Structure {
     public Castle(ID id, boolean playerLeft, Handler handler, SpriteSheet ss, Game game) {
         super(id, playerLeft, handler, ss);
         this.game = game;
+        this.setLane(0);
         health = 1000;
         initCoords();
     }

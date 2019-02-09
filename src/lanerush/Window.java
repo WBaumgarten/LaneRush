@@ -1,5 +1,6 @@
 package lanerush;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 
@@ -22,7 +23,8 @@ public class Window {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setUndecorated(true);
+        frame.setBackground(Color.BLACK);
         frame.setVisible(true);
     }
-
+    
 }
