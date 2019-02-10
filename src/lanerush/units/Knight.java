@@ -21,7 +21,9 @@ public class Knight extends Unit{
     public static final int GOLDCOST = 30, TIMBERCOST = 30;
     private final BufferedImage stillImg;
     private final BufferedImage[] walkImg = new BufferedImage[4];
+    private final BufferedImage[] attackImg = new BufferedImage[4];
     private final Animation walkAnim;
+    private final Animation attackAnim;
 
     public Knight(ID id, boolean playerLeft, int xCoord, int yCoord, int lane, Handler handler, SpriteSheet ss) {
         super(id, playerLeft, handler, ss);
@@ -41,14 +43,23 @@ public class Knight extends Unit{
             walkImg[1] = ss.grabImage(5, 7, 64, 64);
             walkImg[2] = ss.grabImage(7, 7, 64, 64);
             walkImg[3] = ss.grabImage(5, 7, 64, 64);
+            attackImg[0] = stillImg;
+            attackImg[1] = ss.grabImage(1, 9, 64, 64);
+            attackImg[2] = ss.grabImage(3, 9, 64, 64);
+            attackImg[3] = ss.grabImage(1, 9, 64, 64);
         } else {
             stillImg = ss.grabImage(9, 7, 64, 64);
             walkImg[0] = ss.grabImage(11, 7, 64, 64);
             walkImg[1] = ss.grabImage(13, 7, 64, 64);
             walkImg[2] = ss.grabImage(15, 7, 64, 64);
             walkImg[3] = ss.grabImage(13, 7, 64, 64);
+            attackImg[0] = stillImg;
+            attackImg[1] = ss.grabImage(9, 9, 64, 64);
+            attackImg[2] = ss.grabImage(11, 9, 64, 64);
+            attackImg[3] = ss.grabImage(9, 9, 64, 64);
         }
         walkAnim = new Animation(10, walkImg);
+        attackAnim = new Animation(10, attackImg);
     }
 
     @Override
@@ -90,11 +101,18 @@ public class Knight extends Unit{
             x += velX;
         }
         walkAnim.runAnimation();
+        attackAnim.runAnimation();
     }
 
     @Override
     public void render(Graphics g) {
-        if (velX == 0) {
+        if (target != this && target != null) {
+            if (isPlayerLeft()) {
+                attackAnim.drawAnimation(g, x, y - 32, 0);
+            } else {
+                attackAnim.drawAnimation(g, x - 32, y - 32, 0);
+            }
+        } else if (velX == 0) {
             if (isPlayerLeft()) {
                 g.drawImage(stillImg, x, y - 32, null);
             } else {
